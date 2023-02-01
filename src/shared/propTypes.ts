@@ -12,7 +12,7 @@ export const isClassName = PropTypes.oneOfType([
   PropTypes.arrayOf(PropTypes.string),
 ]);
 
-export function isMinDate(props, propName, componentName) {
+export function isMinDate(props: any, propName: string, componentName: string) {
   const { [propName]: minDate } = props;
 
   if (!minDate) {
@@ -36,7 +36,7 @@ export function isMinDate(props, propName, componentName) {
   return null;
 }
 
-export function isMaxDate(props, propName, componentName) {
+export function isMaxDate(props: any, propName: string, componentName: string) {
   const { [propName]: maxDate } = props;
 
   if (!maxDate) {
@@ -74,7 +74,14 @@ export const isValue = PropTypes.oneOfType([
 
 export const isViews = PropTypes.arrayOf(PropTypes.oneOf(allViews));
 
-export function isView(props, propName, componentName) {
+export function isView(
+  props: {
+    [x: string]: any;
+    views?: string[];
+  },
+  propName: string,
+  componentName: string,
+) {
   const { [propName]: view } = props;
   const { views } = props;
 
@@ -92,7 +99,13 @@ export function isView(props, propName, componentName) {
   return null;
 }
 
-isView.isRequired = (props, propName, componentName) => {
+isView.isRequired = (
+  props: {
+    [x: string]: any;
+  },
+  propName: string,
+  componentName: string,
+) => {
   const { [propName]: view } = props;
 
   if (!view) {
@@ -120,7 +133,7 @@ export const tileGroupProps = {
 
 export const tileProps = {
   activeStartDate: PropTypes.instanceOf(Date).isRequired,
-  classes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  classes: PropTypes.arrayOf(PropTypes.string),
   date: PropTypes.instanceOf(Date).isRequired,
   locale: PropTypes.string,
   maxDate: isMaxDate,

@@ -20,16 +20,20 @@ import {
 } from './shared/propTypes';
 import { between } from './shared/utils';
 
+import type { RangeType } from './shared/dates';
+
 const defaultMinDate = new Date();
 defaultMinDate.setFullYear(1, 0, 1);
 defaultMinDate.setHours(0, 0, 0, 0);
 const defaultMaxDate = new Date(8.64e15);
 
 const baseClassName = 'react-calendar';
-const allViews = ['century', 'decade', 'year', 'month'];
-const allValueTypes = [...allViews.slice(1), 'day'];
+const allViews = ['century', 'decade', 'year', 'month'] as const;
+const allValueTypes = [...allViews.slice(1), 'day'] as const;
 
-function toDate(value) {
+type Detail = 'century' | 'decade' | 'year' | 'month';
+
+function toDate(value: Date | string | number): Date {
   if (value instanceof Date) {
     return value;
   }
@@ -40,14 +44,14 @@ function toDate(value) {
 /**
  * Returns views array with disallowed values cut off.
  */
-function getLimitedViews(minDetail, maxDetail) {
+function getLimitedViews(minDetail: Detail, maxDetail: Detail) {
   return allViews.slice(allViews.indexOf(minDetail), allViews.indexOf(maxDetail) + 1);
 }
 
 /**
  * Determines whether a given view is allowed with currently applied settings.
  */
-function isViewAllowed(view, minDetail, maxDetail) {
+function isViewAllowed(view: Detail, minDetail: Detail, maxDetail: Detail) {
   const views = getLimitedViews(minDetail, maxDetail);
 
   return views.indexOf(view) !== -1;
@@ -57,7 +61,7 @@ function isViewAllowed(view, minDetail, maxDetail) {
  * Gets either provided view if allowed by minDetail and maxDetail, or gets
  * the default view if not allowed.
  */
-function getView(view, minDetail, maxDetail) {
+function getView(view: Detail, minDetail: Detail, maxDetail: Detail) {
   if (isViewAllowed(view, minDetail, maxDetail)) {
     return view;
   }
@@ -68,11 +72,11 @@ function getView(view, minDetail, maxDetail) {
 /**
  * Returns value type that can be returned with currently applied settings.
  */
-function getValueType(maxDetail) {
+function getValueType(maxDetail: Detail): RangeType {
   return allValueTypes[allViews.indexOf(maxDetail)];
 }
 
-function getValue(value, index) {
+function getValue(value: any, index: number) {
   if (!value) {
     return null;
   }
@@ -92,7 +96,13 @@ function getValue(value, index) {
   return valueDate;
 }
 
-function getDetailValue({ value, minDate, maxDate, maxDetail }, index) {
+type DetailArgs = {
+  value: Date | Date[];
+  minDate: Date;
+  maxDate: Date;
+  maxDetail: Detail;
+};
+function getDetailValue({ value, minDate, maxDate, maxDetail }: DetailArgs, index: number) {
   const valuePiece = getValue(value, index);
 
   if (!valuePiece) {
@@ -105,11 +115,11 @@ function getDetailValue({ value, minDate, maxDate, maxDetail }, index) {
   return between(detailValueFrom, minDate, maxDate);
 }
 
-const getDetailValueFrom = (args) => getDetailValue(args, 0);
+const getDetailValueFrom = (args: DetailArgs) => getDetailValue(args, 0);
 
-const getDetailValueTo = (args) => getDetailValue(args, 1);
+const getDetailValueTo = (args: DetailArgs) => getDetailValue(args, 1);
 
-const getDetailValueArray = (args) => {
+const getDetailValueArray = (args: DetailArgs) => {
   const { value } = args;
 
   if (Array.isArray(value)) {

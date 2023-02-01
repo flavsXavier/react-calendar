@@ -18,7 +18,34 @@ import {
 } from '../shared/dateFormatter';
 import { isView, isViews } from '../shared/propTypes';
 
+import type { RangeType } from '../shared/dates';
+
 const className = 'react-calendar__navigation';
+
+type NavigationProps = {
+  activeStartDate: Date;
+  drillUp: () => void;
+  formatMonthYear?: typeof defaultFormatMonthYear;
+  formatYear?: typeof defaultFormatYear;
+  locale?: string;
+  maxDate?: Date;
+  minDate?: Date;
+  navigationAriaLabel?: string;
+  navigationAriaLive?: string;
+  navigationLabel?: React.ReactNode;
+  next2AriaLabel?: string;
+  next2Label?: React.ReactNode;
+  nextAriaLabel?: string;
+  nextLabel?: React.ReactNode;
+  prev2AriaLabel?: string;
+  prev2Label?: React.ReactNode;
+  prevAriaLabel?: string;
+  prevLabel?: React.ReactNode;
+  setActiveStartDate: (date: Date) => void;
+  showDoubleView?: boolean;
+  view: RangeType;
+  views: string[];
+};
 
 export default function Navigation({
   activeStartDate,
@@ -43,7 +70,7 @@ export default function Navigation({
   showDoubleView,
   view,
   views,
-}) {
+}: NavigationProps) {
   const drillUpAvailable = views.indexOf(view) > 0;
   const shouldShowPrevNext2Buttons = view !== 'century';
 

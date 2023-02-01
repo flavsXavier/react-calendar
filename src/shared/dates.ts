@@ -33,13 +33,16 @@ import {
 import { CALENDAR_TYPES, WEEKDAYS } from './const';
 import { formatYear as defaultFormatYear } from './dateFormatter';
 
+export type CalendarType = typeof CALENDAR_TYPES[keyof typeof CALENDAR_TYPES];
+export type RangeType = 'century' | 'decade' | 'year' | 'month' | 'day';
+
 const SUNDAY = WEEKDAYS[0];
 const FRIDAY = WEEKDAYS[5];
 const SATURDAY = WEEKDAYS[6];
 
 /* Simple getters - getting a property of a given point in time */
 
-export function getDayOfWeek(date, calendarType = CALENDAR_TYPES.ISO_8601) {
+export function getDayOfWeek(date: Date, calendarType: CalendarType = CALENDAR_TYPES.ISO_8601) {
   const weekday = date.getDay();
 
   switch (calendarType) {
@@ -60,7 +63,7 @@ export function getDayOfWeek(date, calendarType = CALENDAR_TYPES.ISO_8601) {
  * Century
  */
 
-export function getBeginOfCenturyYear(date) {
+export function getBeginOfCenturyYear(date: Date) {
   const beginOfCentury = getCenturyStart(date);
   return getYear(beginOfCentury);
 }
@@ -68,7 +71,7 @@ export function getBeginOfCenturyYear(date) {
 /**
  * Decade
  */
-export function getBeginOfDecadeYear(date) {
+export function getBeginOfDecadeYear(date: Date) {
   const beginOfDecade = getDecadeStart(date);
   return getYear(beginOfDecade);
 }
@@ -83,7 +86,7 @@ export function getBeginOfDecadeYear(date) {
  * @param {Date} date Date.
  * @param {string} calendarType Calendar type.
  */
-export function getBeginOfWeek(date, calendarType = CALENDAR_TYPES.ISO_8601) {
+export function getBeginOfWeek(date: Date, calendarType: CalendarType = CALENDAR_TYPES.ISO_8601) {
   const year = getYear(date);
   const monthIndex = getMonthIndex(date);
   const day = date.getDate() - getDayOfWeek(date, calendarType);
@@ -98,7 +101,7 @@ export function getBeginOfWeek(date, calendarType = CALENDAR_TYPES.ISO_8601) {
  * @param {Date} date Date.
  * @param {string} calendarType Calendar type.
  */
-export function getWeekNumber(date, calendarType = CALENDAR_TYPES.ISO_8601) {
+export function getWeekNumber(date: Date, calendarType: CalendarType = CALENDAR_TYPES.ISO_8601) {
   const calendarTypeForWeekNumber =
     calendarType === CALENDAR_TYPES.US ? CALENDAR_TYPES.US : CALENDAR_TYPES.ISO_8601;
   const beginOfWeek = getBeginOfWeek(date, calendarType);
@@ -113,7 +116,7 @@ export function getWeekNumber(date, calendarType = CALENDAR_TYPES.ISO_8601) {
     year -= 1;
   } while (date < beginOfFirstWeek);
 
-  return Math.round((beginOfWeek - beginOfFirstWeek) / (8.64e7 * 7)) + 1;
+  return Math.round((beginOfWeek.getTime() - beginOfFirstWeek.getTime()) / (8.64e7 * 7)) + 1;
 }
 
 /**
@@ -126,7 +129,7 @@ export function getWeekNumber(date, calendarType = CALENDAR_TYPES.ISO_8601) {
  * @param {string} rangeType Range type (e.g. 'day')
  * @param {Date} date Date.
  */
-export function getBegin(rangeType, date) {
+export function getBegin(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'century':
       return getCenturyStart(date);
@@ -143,7 +146,7 @@ export function getBegin(rangeType, date) {
   }
 }
 
-export function getBeginPrevious(rangeType, date) {
+export function getBeginPrevious(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'century':
       return getPreviousCenturyStart(date);
@@ -158,7 +161,7 @@ export function getBeginPrevious(rangeType, date) {
   }
 }
 
-export function getBeginNext(rangeType, date) {
+export function getBeginNext(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'century':
       return getNextCenturyStart(date);
@@ -173,7 +176,7 @@ export function getBeginNext(rangeType, date) {
   }
 }
 
-export function getBeginPrevious2(rangeType, date) {
+export function getBeginPrevious2(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'decade':
       return getPreviousDecadeStart(date, -100);
@@ -186,7 +189,7 @@ export function getBeginPrevious2(rangeType, date) {
   }
 }
 
-export function getBeginNext2(rangeType, date) {
+export function getBeginNext2(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'decade':
       return getNextDecadeStart(date, 100);
@@ -205,7 +208,7 @@ export function getBeginNext2(rangeType, date) {
  * @param {string} rangeType Range type (e.g. 'day')
  * @param {Date} date Date.
  */
-export function getEnd(rangeType, date) {
+export function getEnd(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'century':
       return getCenturyEnd(date);
@@ -222,7 +225,7 @@ export function getEnd(rangeType, date) {
   }
 }
 
-export function getEndPrevious(rangeType, date) {
+export function getEndPrevious(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'century':
       return getPreviousCenturyEnd(date);
@@ -237,7 +240,7 @@ export function getEndPrevious(rangeType, date) {
   }
 }
 
-export function getEndPrevious2(rangeType, date) {
+export function getEndPrevious2(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'decade':
       return getPreviousDecadeEnd(date, -100);
@@ -256,7 +259,7 @@ export function getEndPrevious2(rangeType, date) {
  * @param {string} rangeType Range type (e.g. 'day')
  * @param {Date} date Date.
  */
-export function getRange(rangeType, date) {
+export function getRange(rangeType: RangeType, date: Date) {
   switch (rangeType) {
     case 'century':
       return getCenturyRange(date);
@@ -280,12 +283,12 @@ export function getRange(rangeType, date) {
  * @param {Date} date1 First date.
  * @param {Date} date2 Second date.
  */
-export function getValueRange(rangeType, date1, date2) {
-  const rawNextValue = [date1, date2].sort((a, b) => a - b);
+export function getValueRange(rangeType: RangeType, date1: Date, date2: Date) {
+  const rawNextValue = [date1, date2].sort((a, b) => a.getTime() - b.getTime()) as [Date, Date];
   return [getBegin(rangeType, rawNextValue[0]), getEnd(rangeType, rawNextValue[1])];
 }
 
-function toYearLabel(locale, formatYear = defaultFormatYear, dates) {
+function toYearLabel(locale: string | undefined, formatYear = defaultFormatYear, dates: Date[]) {
   return dates.map((date) => formatYear(locale, date)).join(' – ');
 }
 
@@ -297,7 +300,11 @@ function toYearLabel(locale, formatYear = defaultFormatYear, dates) {
  * @param {function} formatYear Function to format a year.
  * @param {Date|string|number} date Date or a year as a string or as a number.
  */
-export function getCenturyLabel(locale, formatYear, date) {
+export function getCenturyLabel(
+  locale: string | undefined,
+  formatYear: typeof defaultFormatYear,
+  date: Date | string | number,
+) {
   return toYearLabel(locale, formatYear, getCenturyRange(date));
 }
 
@@ -309,7 +316,11 @@ export function getCenturyLabel(locale, formatYear, date) {
  * @param {function} formatYear Function to format a year.
  * @param {Date|string|number} date Date or a year as a string or as a number.
  */
-export function getDecadeLabel(locale, formatYear, date) {
+export function getDecadeLabel(
+  locale: string,
+  formatYear: typeof defaultFormatYear,
+  date: Date | string | number,
+) {
   return toYearLabel(locale, formatYear, getDecadeRange(date));
 }
 
@@ -318,7 +329,7 @@ export function getDecadeLabel(locale, formatYear, date) {
  *
  * @param {Date} date Date.
  */
-export function isCurrentDayOfWeek(date) {
+export function isCurrentDayOfWeek(date: Date) {
   return date.getDay() === new Date().getDay();
 }
 
@@ -328,7 +339,7 @@ export function isCurrentDayOfWeek(date) {
  * @param {Date} date Date.
  * @param {string} calendarType Calendar type.
  */
-export function isWeekend(date, calendarType = CALENDAR_TYPES.ISO_8601) {
+export function isWeekend(date: Date, calendarType: CalendarType) {
   const weekday = date.getDay();
   switch (calendarType) {
     case CALENDAR_TYPES.ARABIC:

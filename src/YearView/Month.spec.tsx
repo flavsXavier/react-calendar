@@ -19,9 +19,9 @@ describe('Month', () => {
       />,
     );
 
-    const wrapper = container.querySelector('.react-calendar__tile');
+    const wrapper = container.querySelector('.react-calendar__tile') as HTMLElement;
 
-    expect(wrapper).toHaveClass('react-calendar__tile');
+    expect(wrapper).toHaveClass('react-calendar__tile') as HTMLElement;
     expect(wrapper).toHaveClass('react-calendar__tile--flag');
     expect(wrapper).toHaveClass('react-calendar__year-view__months__month');
     expect(wrapper).toHaveClass('testFunctionClassName');
@@ -42,7 +42,7 @@ describe('Month', () => {
       <Month {...tileProps} date={new Date(2018, 6, 1)} minDate={new Date(2018, 7, 1)} />,
     );
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
 
     expect(tile).toBeDisabled();
   });
@@ -52,7 +52,7 @@ describe('Month', () => {
       <Month {...tileProps} date={new Date(2018, 0, 1)} minDate={new Date(2018, 0, 1)} />,
     );
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
 
     expect(tile).toBeEnabled();
   });
@@ -62,7 +62,7 @@ describe('Month', () => {
       <Month {...tileProps} date={new Date(2018, 6, 1)} maxDate={new Date(2018, 5, 1)} />,
     );
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
 
     expect(tile).toBeDisabled();
   });
@@ -72,7 +72,7 @@ describe('Month', () => {
       <Month {...tileProps} date={new Date(2018, 0, 1)} maxDate={new Date(2018, 0, 1)} />,
     );
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
 
     expect(tile).toBeEnabled();
   });
@@ -95,7 +95,7 @@ describe('Month', () => {
 
     const { container } = render(<Month {...tileProps} date={date} onMouseOver={onMouseOver} />);
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
     fireEvent.mouseOver(tile);
 
     expect(onMouseOver).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('Month', () => {
 
     const { container } = render(<Month {...tileProps} date={date} onMouseOver={onMouseOver} />);
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
     fireEvent.focus(tile);
 
     expect(onMouseOver).toHaveBeenCalled();
@@ -153,7 +153,7 @@ describe('Month', () => {
       <Month {...tileProps} date={date} formatMonth={formatMonth} locale={locale} />,
     );
 
-    const tile = container.querySelector('.react-calendar__tile');
+    const tile = container.querySelector('.react-calendar__tile') as HTMLElement;
 
     expect(formatMonth).toHaveBeenCalled();
     expect(formatMonth).toHaveBeenCalledWith(locale, date);

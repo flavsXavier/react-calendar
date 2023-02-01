@@ -1,5 +1,9 @@
 import { getRange } from './dates';
 
+import type { RangeType } from './dates';
+
+export type Range<T = any> = [T, T];
+
 /**
  * Returns a value no smaller than min and no larger than max.
  *
@@ -7,29 +11,31 @@ import { getRange } from './dates';
  * @param {*} min Minimum return value.
  * @param {*} max Maximum return value.
  */
-export function between(value, min, max) {
+export function between(value: any, min: any, max: any) {
   if (min && min > value) {
     return min;
   }
+
   if (max && max < value) {
     return max;
   }
+
   return value;
 }
 
-export function isValueWithinRange(value, range) {
+export function isValueWithinRange(value: any, range: Range) {
   return range[0] <= value && range[1] >= value;
 }
 
-export function isRangeWithinRange(greaterRange, smallerRange) {
+export function isRangeWithinRange(greaterRange: Range, smallerRange: Range) {
   return greaterRange[0] <= smallerRange[0] && greaterRange[1] >= smallerRange[1];
 }
 
-export function doRangesOverlap(range1, range2) {
+export function doRangesOverlap(range1: Range, range2: Range) {
   return isValueWithinRange(range1[0], range2) || isValueWithinRange(range1[1], range2);
 }
 
-function getRangeClassNames(valueRange, dateRange, baseClassName) {
+function getRangeClassNames(valueRange: Range, dateRange: Range, baseClassName: string) {
   const isRange = doRangesOverlap(dateRange, valueRange);
 
   const classes = [];
@@ -56,7 +62,19 @@ function getRangeClassNames(valueRange, dateRange, baseClassName) {
   return classes;
 }
 
-export function getTileClasses({ value, valueType, date, dateType, hover } = {}) {
+export function getTileClasses({
+  value,
+  valueType,
+  date,
+  dateType,
+  hover,
+}: {
+  value: Date | Range<Date> | undefined;
+  valueType: RangeType;
+  date: Date | Range<Date> | undefined;
+  dateType: RangeType;
+  hover?: Date;
+}) {
   const className = 'react-calendar__tile';
   const classes = [className];
 
@@ -87,7 +105,7 @@ export function getTileClasses({ value, valueType, date, dateType, hover } = {})
     );
   }
 
-  const valueRange = Array.isArray(value) ? value : getRange(valueType, value);
+  const valueRange: Range<Date> = Array.isArray(value) ? value : getRange(valueType, value);
 
   if (isRangeWithinRange(valueRange, dateRange)) {
     classes.push(`${className}--active`);
@@ -99,10 +117,11 @@ export function getTileClasses({ value, valueType, date, dateType, hover } = {})
 
   classes.push(...valueRangeClassNames);
 
-  const valueArray = [].concat(value);
+  const valueArray: Date[] = Array.isArray(value) ? value : [value];
 
   if (hover && valueArray.length === 1) {
-    const hoverRange = hover > valueRange[0] ? [valueRange[0], hover] : [hover, valueRange[0]];
+    const hoverRange: Range<Date> =
+      hover > valueRange[0] ? [valueRange[0], hover] : [hover, valueRange[0]];
     const hoverRangeClassNames = getRangeClassNames(hoverRange, dateRange, `${className}--hover`);
 
     classes.push(...hoverRangeClassNames);

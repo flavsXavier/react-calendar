@@ -3,7 +3,7 @@ export const CALENDAR_TYPES = {
   HEBREW: 'Hebrew',
   ISO_8601: 'ISO 8601',
   US: 'US',
-};
+} as const;
 
 export const CALENDAR_TYPE_LOCALES = {
   [CALENDAR_TYPES.US]: [
@@ -50,6 +50,6 @@ export const CALENDAR_TYPE_LOCALES = {
     'ps-AR',
   ],
   [CALENDAR_TYPES.HEBREW]: ['he', 'he-IL'],
-};
+} as const;
 
-export const WEEKDAYS = [...Array(7)].map((el, index) => index);
+export const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6] as const;
